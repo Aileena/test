@@ -8,6 +8,7 @@
 <script src="../../generators/javascript.js"></script>
 <script src="unittest_javascript.js"></script>
 <script src="../../generators/javascript/logic.js"></script>
+<script src="../../generators/javascript/logical.js"></script>
 <script src="../../generators/javascript/loops.js"></script>
 <script src="../../generators/javascript/math.js"></script>
 <script src="../../generators/javascript/text.js"></script>
@@ -19,6 +20,7 @@
 <script src="../../generators/python.js"></script>
 <script src="unittest_python.js"></script>
 <script src="../../generators/python/logic.js"></script>
+<script src="../../generators/python/logical.js"></script>
 <script src="../../generators/python/loops.js"></script>
 <script src="../../generators/python/math.js"></script>
 <script src="../../generators/python/text.js"></script>
@@ -30,6 +32,7 @@
 <script src="../../generators/php.js"></script>
 <script src="unittest_php.js"></script>
 <script src="../../generators/php/logic.js"></script>
+<script src="../../generators/php/logical.js"></script>
 <script src="../../generators/php/loops.js"></script>
 <script src="../../generators/php/math.js"></script>
 <script src="../../generators/php/text.js"></script>
@@ -41,6 +44,7 @@
 <script src="../../generators/dart.js"></script>
 <script src="unittest_dart.js"></script>
 <script src="../../generators/dart/logic.js"></script>
+<script src="../../generators/dart/logical.js"></script>
 <script src="../../generators/dart/loops.js"></script>
 <script src="../../generators/dart/math.js"></script>
 <script src="../../generators/dart/text.js"></script>
@@ -49,9 +53,23 @@
 <script src="../../generators/dart/variables.js"></script>
 <script src="../../generators/dart/procedures.js"></script>
 
+<script src="../../generators/lua.js"></script>
+<script src="unittest_lua.js"></script>
+<script src="../../generators/lua/logic.js"></script>
+<script src="../../generators/lua/logical.js"></script>
+<script src="../../generators/lua/loops.js"></script>
+<script src="../../generators/lua/math.js"></script>
+<script src="../../generators/lua/text.js"></script>
+<script src="../../generators/lua/lists.js"></script>
+<script src="../../generators/lua/colour.js"></script>
+<script src="../../generators/lua/variables.js"></script>
+<script src="../../generators/lua/procedures.js"></script>
+
+
 <script src="unittest.js"></script>
 <script src="../../msg/messages.js"></script>
 <script src="../../blocks/logic.js"></script>
+<script src="../../blocks/logical.js"></script>
 <script src="../../blocks/loops.js"></script>
 <script src="../../blocks/math.js"></script>
 <script src="../../blocks/text.js"></script>
@@ -153,6 +171,11 @@ function toDart() {
   var code = Blockly.Dart.workspaceToCode(workspace);
   setOutput(code);
 }
+
+function toLua() {
+  var code = Blockly.Lua.workspaceToCode(workspace);
+  setOutput(code);
+}
 </script>
 
 <style>
@@ -191,6 +214,9 @@ h1 {
       <block type="unittest_assertequals"></block>
       <block type="unittest_assertvalue"></block>
       <block type="unittest_fail"></block>
+    </category>
+    <category id="catLogical" colour="105">
+      <block type="controls_logical_and"></block>
     </category>
     <category name="Logic" colour="210">
       <block type="controls_if"></block>
@@ -287,9 +313,10 @@ h1 {
       <input type="button" value="Python" onclick="toPython()">
       <input type="button" value="PHP" onclick="toPhp()">
       <input type="button" value="Dart" onclick="toDart()">
+      <input type="button" value="Lua" onclick="toLua()">
     </p>
   </td></tr><tr><td height="99%">
-    <textarea id="importExport" readonly="readonly" wrap="off"></textarea>
+    <textarea id="importExport" readonly wrap="off"></textarea>
   </td></tr></table>
 </body>
 </html>

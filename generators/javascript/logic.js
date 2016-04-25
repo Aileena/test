@@ -28,25 +28,7 @@ goog.provide('Blockly.JavaScript.logic');
 
 goog.require('Blockly.JavaScript');
 
-Blockly.JavaScript['controls_iff'] = function(block) {
-  // If/elseif/else condition.
-  var n = 0;
-  var argument = Blockly.JavaScript.valueToCode(block, 'IF' + n,
-      Blockly.JavaScript.ORDER_NONE) || 'false';
-  var branch = Blockly.JavaScript.statementToCode(block, 'DO' + n);
-  var code = 'if (' + argument + ') {\n' + branch + '}';
-  for (n = 1; n <= block.elseifCount_; n++) {
-    argument = Blockly.JavaScript.valueToCode(block, 'IF' + n,
-        Blockly.JavaScript.ORDER_NONE) || 'false';
-    branch = Blockly.JavaScript.statementToCode(block, 'DO' + n);
-    code += ' else if (' + argument + ') {\n' + branch + '}';
-  }
-  if (block.elseCount_) {
-    branch = Blockly.JavaScript.statementToCode(block, 'ELSE');
-    code += ' else {\n' + branch + '}';
-  }
-  return code + '\n';
-};
+
 
 Blockly.JavaScript['controls_if'] = function(block) {
   // If/elseif/else condition.

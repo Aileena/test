@@ -6,6 +6,7 @@
 <script src="../blockly_uncompressed.js"></script>
 <script src="../generators/javascript.js"></script>
 <script src="../generators/javascript/logic.js"></script>
+<script src="../generators/javascript/logical.js"></script>
 <script src="../generators/javascript/loops.js"></script>
 <script src="../generators/javascript/math.js"></script>
 <script src="../generators/javascript/text.js"></script>
@@ -15,6 +16,7 @@
 <script src="../generators/javascript/procedures.js"></script>
 <script src="../generators/php.js"></script>
 <script src="../generators/php/logic.js"></script>
+<script src="../generators/php/logical.js"></script>
 <script src="../generators/php/loops.js"></script>
 <script src="../generators/php/math.js"></script>
 <script src="../generators/php/text.js"></script>
@@ -24,6 +26,7 @@
 <script src="../generators/php/procedures.js"></script>
 <script src="../generators/python.js"></script>
 <script src="../generators/python/logic.js"></script>
+<script src="../generators/python/logical.js"></script>
 <script src="../generators/python/loops.js"></script>
 <script src="../generators/python/math.js"></script>
 <script src="../generators/python/text.js"></script>
@@ -33,6 +36,7 @@
 <script src="../generators/python/procedures.js"></script>
 <script src="../generators/dart.js"></script>
 <script src="../generators/dart/logic.js"></script>
+<script src="../generators/dart/logical.js"></script>
 <script src="../generators/dart/loops.js"></script>
 <script src="../generators/dart/math.js"></script>
 <script src="../generators/dart/text.js"></script>
@@ -40,8 +44,19 @@
 <script src="../generators/dart/colour.js"></script>
 <script src="../generators/dart/variables.js"></script>
 <script src="../generators/dart/procedures.js"></script>
+<script src="../generators/lua.js"></script>
+<script src="../generators/lua/logic.js"></script>
+<script src="../generators/lua/logical.js"></script>
+<script src="../generators/lua/loops.js"></script>
+<script src="../generators/lua/math.js"></script>
+<script src="../generators/lua/text.js"></script>
+<script src="../generators/lua/lists.js"></script>
+<script src="../generators/lua/colour.js"></script>
+<script src="../generators/lua/variables.js"></script>
+<script src="../generators/lua/procedures.js"></script>
 <script src="../msg/messages.js"></script>
 <script src="../blocks/logic.js"></script>
+<script src="../blocks/logical.js"></script>
 <script src="../blocks/loops.js"></script>
 <script src="../blocks/math.js"></script>
 <script src="../blocks/text.js"></script>
@@ -82,14 +97,19 @@ function start() {
              },
           });
   // Restore previously displayed text.
-  var text = sessionStorage.getItem('textarea');
-  if (text) {
-    document.getElementById('importExport').value = text;
+  if (sessionStorage) {
+    var text = sessionStorage.getItem('textarea');
+    if (text) {
+      document.getElementById('importExport').value = text;
+    }
+    // Restore event logging state.
+    var state = sessionStorage.getItem('logEvents');
+    logEvents(Boolean(Number(state)));
+  } else {
+    // MSIE 11 does not support sessionStorage on file:// URLs.
+    logEvents(false);
   }
   taChange();
-  // Restore event logging state.
-  var state = sessionStorage.getItem('logEvents');
-  logEvents(Boolean(state));
 }
 
 function toXml() {
@@ -118,7 +138,9 @@ function toCode(lang) {
 // Preserve text between page reloads.
 function taChange() {
   var textarea = document.getElementById('importExport');
-  sessionStorage.setItem('textarea', textarea.value)
+  if (sessionStorage) {
+    sessionStorage.setItem('textarea', textarea.value);
+  }
   var valid = true;
   try {
     Blockly.Xml.textToDom(textarea.value);
@@ -131,7 +153,9 @@ function taChange() {
 function logEvents(state) {
   var checkbox = document.getElementById('logCheck');
   checkbox.checked = state;
-  sessionStorage.setItem('logEvents', Number(state));
+  if (sessionStorage) {
+    sessionStorage.setItem('logEvents', Number(state));
+  }
   if (state) {
     workspace.addChangeListener(logger);
   } else {
@@ -224,18 +248,6 @@ h1 {
   height: 95%;
   width: 70%;
 }
-#collaborators {
-  float: right;
-  width: 30px;
-  margin-left: 10px;
-}
-#collaborators > img {
-  margin-right: 5px;
-  height: 30px;
-  padding-bottom: 5px;
-  width: 30px;
-  border-radius: 3px;
-}
 #importExport {
   font-family: monospace;
 }
@@ -243,11 +255,12 @@ h1 {
 </head>
 <body onload="start()">
 
-  <div id="collaborators"></div>
-
   <div id="blocklyDiv"></div>
 
   <xml id="toolbox" style="display: none">
+    <category id="catLogical" colour="105">
+      <block type="controls_logical_and"></block>
+    </category>
     <category name="Logic" colour="210">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -576,6 +589,8 @@ h1 {
     <input type="button" value="To PHP" onclick="toCode('PHP')">
     &nbsp;
     <input type="button" value="To Dart" onclick="toCode('Dart')">
+    &nbsp;
+    <input type="button" value="To Lua" onclick="toCode('Lua')">
     <br>
     <textarea id="importExport" style="width: 26%; height: 12em"
       onchange="taChange();" onkeyup="taChange()"></textarea>
